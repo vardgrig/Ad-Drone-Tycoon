@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abf7d445288f42c5a52eaa710fc69647, type: 3}
+  m_Name: DroneBase1
+  m_EditorClassIdentifier: 
+  upgradeName: Drone Base 1
+  description: Base drone characteristics
+  upgradeType: 0
+  cost:
+    moneyType: 0
+    amount: 0
+  requiredUpgrade: []
+  effectType:
+  - {fileID: 11400000, guid: d56d0c157250f3445826b71d52b68381, type: 2}
+  - {fileID: 11400000, guid: 844c6bf7aa6a2d545ae41fb026bebb31, type: 2}
+  - {fileID: 11400000, guid: 6ffca944034ef3d41a9588594637e963, type: 2}
+  - {fileID: 11400000, guid: e1326a46efebcf642ae0832a95586afc, type: 2}
+  - {fileID: 11400000, guid: 70e8ad6063a4b9845a1188b3ca60c77a, type: 2}
