@@ -1,12 +1,14 @@
 using GameFlow.Contracts;
+using GameFlow.Drone;
 using GameFlow.PlayerProgression;
+using GameFlow.Stats;
 using GameFlow.Upgrade.Base;
 using GameFlow.Upgrade.Company;
 using GameFlow.Upgrade.Location;
 using Managers.SceneLoader;
-using Systems;
 using Systems.FSM;
 using Systems.Pool;
+using Systems.SaveLoad;
 using Systems.StateFactory;
 using Zenject;
 
@@ -57,10 +59,20 @@ namespace Installers.ProjectInstallers
                 .AsSingle()
                 .NonLazy();
             
-            /*Container
-                .BindInterfacesAndSelfTo<UpgradeService>()
+            Container
+                .BindInterfacesAndSelfTo<StatService>()
                 .AsSingle()
-                .NonLazy();*/
+                .NonLazy();
+            
+            Container
+                .BindInterfacesAndSelfTo<ObfuscatedSaveService>()
+                .AsSingle()
+                .NonLazy();
+            
+            Container
+                .BindInterfacesAndSelfTo<DroneService>()
+                .AsSingle()
+                .NonLazy();
             
             Container
                 .Bind<PoolManager>()
