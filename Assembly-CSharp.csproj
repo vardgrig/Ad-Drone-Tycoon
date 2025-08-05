@@ -46,7 +46,18 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.40f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\GameFlow\Drone\DroneService.cs" />
+    <Compile Include="Assets\Scripts\GameFlow\Stats\IStatService.cs" />
+    <Compile Include="Assets\Scripts\GameFlow\Stats\StatContainer.cs" />
+    <Compile Include="Assets\Scripts\GameFlow\Stats\StatDefinition.cs" />
+    <Compile Include="Assets\Scripts\GameFlow\Stats\StatModifier.cs" />
+    <Compile Include="Assets\Scripts\GameFlow\Stats\StatsData.cs" />
+    <Compile Include="Assets\Scripts\GameFlow\Stats\StatService.cs" />
+    <Compile Include="Assets\Scripts\GameFlow\Stats\StatValue.cs" />
     <Compile Include="Assets\Scripts\Systems\Pool\PoolManager.cs" />
+    <Compile Include="Assets\Scripts\Systems\SaveLoad\ISaveService.cs" />
+    <Compile Include="Assets\Scripts\Systems\SaveLoad\ObfuscatedSaveService.cs" />
+    <Compile Include="Assets\Scripts\Systems\SaveLoad\SecureSaveData.cs" />
     <Compile Include="Assets\Scripts\UI\Controllers\UpgradeShopUIController.cs" />
     <Compile Include="Assets\Heat - Complete Modern UI\Scripts\UI Elements\BoxContainer.cs" />
     <Compile Include="Assets\Scripts\GameFlow\Upgrade\Location\ILocationDatabase.cs" />
@@ -96,7 +107,7 @@
     <Compile Include="Assets\Heat - Complete Modern UI\Scripts\Core\PauseMenuManagerEditor.cs" />
     <Compile Include="Assets\Heat - Complete Modern UI\Scripts\Localization\LocalizationSettingsEditor.cs" />
     <Compile Include="Assets\Scripts\GameFlow\Contracts\IContractService.cs" />
-    <Compile Include="Assets\Scripts\GameFlow\Drone\a.cs" />
+    <Compile Include="Assets\Scripts\GameFlow\Drone\IDroneService.cs" />
     <Compile Include="Assets\Heat - Complete Modern UI\Scripts\UI Manager\UIManagerSplashScreen.cs" />
     <Compile Include="Assets\Heat - Complete Modern UI\Scripts\UI Manager\UIManagerFontChanger.cs" />
     <Compile Include="Assets\Heat - Complete Modern UI\Scripts\HUD\HUDManagerEditor.cs" />
