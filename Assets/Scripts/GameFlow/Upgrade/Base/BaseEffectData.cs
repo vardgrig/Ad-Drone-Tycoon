@@ -7,5 +7,6 @@ namespace GameFlow.Upgrade.Base
     {
         public UpgradeEffectType effectType;
         public float effectValue;
+        public bool isPercentage;
     }
 }
