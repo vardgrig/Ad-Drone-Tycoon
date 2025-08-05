@@ -32,6 +32,7 @@ namespace GameFlow.PlayerProgression
         void EquipUpgrade(BaseUpgradeData upgrade);
         void UnequipUpgrade(BaseUpgradeData upgrade);
         List<BaseUpgradeData> GetEquippedUpgrades();
+        List<BaseUpgradeData> GetUnlockedUpgradesByType(UpgradeType type);
     
         // Locations
         bool IsLocationUnlocked(LocationData location);

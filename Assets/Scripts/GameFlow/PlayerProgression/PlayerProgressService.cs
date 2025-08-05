@@ -116,7 +116,6 @@ namespace GameFlow.PlayerProgression
             if (IsUpgradeUnlocked(upgrade)) return false;
             if (!CanAfford(upgrade.cost)) return false;
         
-            // Check required upgrades
             foreach (var requiredUpgrade in upgrade.requiredUpgrades)
             {
                 if (!IsUpgradeUnlocked(requiredUpgrade))
@@ -138,6 +137,7 @@ namespace GameFlow.PlayerProgression
                 // Give experience for unlocking upgrades
                 AddExperience(50);
             
+                EquipUpgrade(upgrade); // Automatically equip the upgrade if unlocked
                 SaveProgress();
                 return true;
             }
@@ -175,6 +175,14 @@ namespace GameFlow.PlayerProgression
                     equipped.Add(upgrade);
             }
             return equipped;
+        }
+        
+        public List<BaseUpgradeData> GetUnlockedUpgradesByType(UpgradeType type)
+        {
+            return _progressData.unlockedUpgrades
+                .Select(upgradeId => _upgradeDatabase.GetUpgradeById(upgradeId))
+                .Where(upgrade => upgrade && upgrade.upgradeType == type)
+                .ToList();
         }
         #endregion
     
