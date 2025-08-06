@@ -137,7 +137,7 @@ namespace GameFlow.PlayerProgression
                 // Give experience for unlocking upgrades
                 AddExperience(50);
             
-                EquipUpgrade(upgrade); // Automatically equip the upgrade if unlocked
+                TryEquipUpgrade(upgrade); // Automatically equip the upgrade if unlocked
                 SaveProgress();
                 return true;
             }
@@ -150,13 +150,14 @@ namespace GameFlow.PlayerProgression
             return _progressData.equippedUpgrades.Contains(upgrade.UniqueId);
         }
     
-        public void EquipUpgrade(BaseUpgradeData upgrade)
+        public bool TryEquipUpgrade(BaseUpgradeData upgrade)
         {
-            if (!IsUpgradeUnlocked(upgrade)) return;
-            if (IsUpgradeEquipped(upgrade)) return;
+            if (!IsUpgradeUnlocked(upgrade)) return false;
+            if (IsUpgradeEquipped(upgrade)) return false;
         
             _progressData.equippedUpgrades.Add(upgrade.UniqueId);
             SaveProgress();
+            return true;
         }
     
         public void UnequipUpgrade(BaseUpgradeData upgrade)

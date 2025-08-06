@@ -9,8 +9,8 @@ namespace Installers.SceneInstallers
     public class FirstPersonSceneInstaller : MonoInstaller
     {
         [SerializeField] private PlayerProgressUIController playerProgressUI;
-        [SerializeField] private UpgradeShopUIController upgradeShopUI;
         [SerializeField] private ContractUIController contractUI;
+
         public override void InstallBindings()
         {
             Container
@@ -18,7 +18,7 @@ namespace Installers.SceneInstallers
                 .FromComponentInHierarchy()
                 .AsSingle()
                 .NonLazy();
-            
+
             if (playerProgressUI)
             {
                 Container
@@ -26,23 +26,19 @@ namespace Installers.SceneInstallers
                     .FromInstance(playerProgressUI)
                     .AsSingle();
             }
-            
-            if (upgradeShopUI)
-            {
-                Container
-                    .Bind<UpgradeShopUIController>()
-                    .FromInstance(upgradeShopUI)
-                    .AsSingle();
-            }
-            
+
+            Container
+                .BindInterfacesAndSelfTo<UpgradeItemUIController>()
+                .AsSingle();
+
             if (contractUI)
             {
                 Container
                     .Bind<ContractUIController>()
                     .FromInstance(contractUI)
                     .AsSingle();
-            }  
-            
+            }
+
             Container
                 .BindInterfacesAndSelfTo<FirstPersonSceneBootstrapper>()
                 .AsSingle()

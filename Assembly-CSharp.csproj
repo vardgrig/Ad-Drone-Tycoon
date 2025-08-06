@@ -54,11 +54,13 @@
     <Compile Include="Assets\Scripts\GameFlow\Stats\StatsData.cs" />
     <Compile Include="Assets\Scripts\GameFlow\Stats\StatService.cs" />
     <Compile Include="Assets\Scripts\GameFlow\Stats\StatValue.cs" />
+    <Compile Include="Assets\Scripts\Signals\UISignals.cs" />
     <Compile Include="Assets\Scripts\Systems\Pool\PoolManager.cs" />
     <Compile Include="Assets\Scripts\Systems\SaveLoad\ISaveService.cs" />
     <Compile Include="Assets\Scripts\Systems\SaveLoad\ObfuscatedSaveService.cs" />
     <Compile Include="Assets\Scripts\Systems\SaveLoad\SecureSaveData.cs" />
-    <Compile Include="Assets\Scripts\UI\Controllers\UpgradeShopUIController.cs" />
+    <Compile Include="Assets\Scripts\UI\Controllers\UpgradeItemUIController.cs" />
+    <Compile Include="Assets\Scripts\UI\Controllers\UIStateData.cs" />
     <Compile Include="Assets\Heat - Complete Modern UI\Scripts\UI Elements\BoxContainer.cs" />
     <Compile Include="Assets\Scripts\GameFlow\Upgrade\Location\ILocationDatabase.cs" />
     <Compile Include="Assets\Scripts\GameFlow\Contracts\ContractService.cs" />

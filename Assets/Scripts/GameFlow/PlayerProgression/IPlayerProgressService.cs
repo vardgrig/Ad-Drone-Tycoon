@@ -29,7 +29,7 @@ namespace GameFlow.PlayerProgression
         bool CanUnlockUpgrade(BaseUpgradeData upgrade);
         bool UnlockUpgrade(BaseUpgradeData upgrade);
         bool IsUpgradeEquipped(BaseUpgradeData upgrade);
-        void EquipUpgrade(BaseUpgradeData upgrade);
+        bool TryEquipUpgrade(BaseUpgradeData upgrade);
         void UnequipUpgrade(BaseUpgradeData upgrade);
         List<BaseUpgradeData> GetEquippedUpgrades();
         List<BaseUpgradeData> GetUnlockedUpgradesByType(UpgradeType type);

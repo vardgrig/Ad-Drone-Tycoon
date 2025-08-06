@@ -1,97 +1,113 @@
-using GameFlow.PlayerProgression;
-using GameFlow.Upgrade.Base;
+using Signals;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace UI.Views
 {
     public class UpgradeItemUI : MonoBehaviour
     {
-        [Header("UI References")]
-        [SerializeField] private TextMeshProUGUI nameText;
+        [Header("UI References")] [SerializeField]
+        private TextMeshProUGUI nameText;
+
         [SerializeField] private TextMeshProUGUI descriptionText;
         [SerializeField] private TextMeshProUGUI costText;
         [SerializeField] private Button purchaseButton;
         [SerializeField] private Button equipButton;
+        [SerializeField] private Button infoButton;
         [SerializeField] private Image iconImage;
         [SerializeField] private GameObject lockedOverlay;
         [SerializeField] private GameObject ownedIndicator;
         [SerializeField] private GameObject equippedIndicator;
-    
-        private BaseUpgradeData _upgrade;
-        private IPlayerProgressService _playerProgress;
-    
-        public void Initialize(BaseUpgradeData upgrade, IPlayerProgressService playerProgress)
+        [SerializeField] private Image backgroundImage;
+
+        [Header("Visual States")] [SerializeField]
+        private Color defaultBackgroundColor = Color.white;
+
+        [SerializeField] private Color ownedBackgroundColor = new Color(0.2f, 0.8f, 0.2f, 0.3f);
+        [SerializeField] private Color equippedBackgroundColor = new Color(0.2f, 0.2f, 0.8f, 0.3f);
+        [SerializeField] private Color affordableTextColor = Color.white;
+        [SerializeField] private Color cannotAffordTextColor = Color.red;
+
+        private SignalBus _signalBus;
+        private string UpgradeId { get; set; }
+
+        [Inject]
+        public void Construct(SignalBus signalBus)
         {
-            _upgrade = upgrade;
-            _playerProgress = playerProgress;
-        
-            // Set static UI elements
-            nameText.text = upgrade.upgradeName;
-            descriptionText.text = upgrade.description;
-            costText.text = $"${upgrade.cost.amount}";
-        
-            if (upgrade.icon != null)
-                iconImage.sprite = upgrade.icon;
-        
-            // Set up buttons
-            purchaseButton.onClick.AddListener(OnPurchaseClicked);
-            equipButton.onClick.AddListener(OnEquipClicked);
-        
-            RefreshState();
+            _signalBus = signalBus;
         }
-    
-        public void RefreshState()
+
+        private void Awake()
         {
-            bool isUnlocked = _playerProgress.IsUpgradeUnlocked(_upgrade);
-            bool canAfford = _playerProgress.CanAfford(_upgrade.cost);
-            bool canUnlock = _playerProgress.CanUnlockUpgrade(_upgrade);
-            bool isEquipped = _playerProgress.IsUpgradeEquipped(_upgrade);
-        
-            // Update UI state
-            lockedOverlay.SetActive(!isUnlocked);
-            ownedIndicator.SetActive(isUnlocked);
-            equippedIndicator.SetActive(isEquipped);
-        
-            // Update buttons
-            purchaseButton.gameObject.SetActive(!isUnlocked);
-            purchaseButton.interactable = canUnlock;
-        
-            equipButton.gameObject.SetActive(isUnlocked);
-            equipButton.interactable = !isEquipped;
-            equipButton.GetComponentInChildren<TextMeshProUGUI>().text = isEquipped ? "EQUIPPED" : "EQUIP";
-        
-            // Update cost color
-            costText.color = canAfford ? Color.white : Color.red;
+            purchaseButton.onClick.AddListener(OnPurchaseButtonClicked);
+            equipButton.onClick.AddListener(OnEquipButtonClicked);
+            if (infoButton != null)
+                infoButton.onClick.AddListener(OnInfoButtonClicked);
         }
-    
-        private void OnPurchaseClicked()
+
+        private void OnPurchaseButtonClicked() => _signalBus.TryFire(new PurchaseUpgradeSignal(UpgradeId));
+        private void OnEquipButtonClicked() => _signalBus.TryFire(new EquipUpgradeSignal(UpgradeId));
+        private void OnInfoButtonClicked() => _signalBus.TryFire(new ShowUpgradeInfoSignal(UpgradeId));
+
+
+        // Called by controller to set data
+        public void SetUpgradeId(string upgradeId) => UpgradeId = upgradeId;
+
+        public void SetName(string text) => nameText.text = text;
+        public void SetDescription(string text) => descriptionText.text = text;
+        public void SetCost(string text) => costText.text = text;
+        public void SetIcon(Sprite sprite) => iconImage.sprite = sprite;
+
+        public void SetCostTextColor(bool canAfford)
         {
-            if (_playerProgress.UnlockUpgrade(_upgrade))
-            {
-                Debug.Log($"Purchased upgrade: {_upgrade.upgradeName}");
-                // Optional: Play purchase sound/animation
-            }
-            else
-            {
-                Debug.Log("Cannot purchase upgrade!");
-                // Optional: Show error message
-            }
+            costText.color = canAfford ? affordableTextColor : cannotAffordTextColor;
         }
-    
-        private void OnEquipClicked()
+
+        public void SetBackgroundColor(UpgradeItemUIState state)
         {
-            if (_playerProgress.IsUpgradeEquipped(_upgrade))
+            if (!backgroundImage) return;
+
+            backgroundImage.color = state switch
             {
-                _playerProgress.UnequipUpgrade(_upgrade);
-            }
-            else
-            {
-                _playerProgress.EquipUpgrade(_upgrade);
-            }
-        
-            RefreshState();
+                UpgradeItemUIState.Equipped => equippedBackgroundColor,
+                UpgradeItemUIState.Owned => ownedBackgroundColor,
+                _ => defaultBackgroundColor
+            };
         }
+
+        public void SetLockedOverlay(bool active) => lockedOverlay.SetActive(active);
+        public void SetOwnedIndicator(bool active) => ownedIndicator.SetActive(active);
+        public void SetEquippedIndicator(bool active) => equippedIndicator.SetActive(active);
+
+        public void SetPurchaseButtonState(bool active, bool interactable)
+        {
+            purchaseButton.gameObject.SetActive(active);
+            purchaseButton.interactable = interactable;
+        }
+
+        public void SetEquipButtonState(bool active, bool interactable, string text)
+        {
+            equipButton.gameObject.SetActive(active);
+            equipButton.interactable = interactable;
+            var buttonText = equipButton.GetComponentInChildren<TextMeshProUGUI>();
+            if (buttonText) 
+                buttonText.text = text;
+        }
+
+        private void OnDestroy()
+        {
+            purchaseButton.onClick.RemoveAllListeners();
+            equipButton.onClick.RemoveAllListeners();
+            if (infoButton) infoButton.onClick.RemoveAllListeners();
+        }
+    }
+
+    public enum UpgradeItemUIState
+    {
+        Default,
+        Owned,
+        Equipped
     }
 }

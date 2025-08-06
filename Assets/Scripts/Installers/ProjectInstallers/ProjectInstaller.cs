@@ -6,6 +6,7 @@ using GameFlow.Upgrade.Base;
 using GameFlow.Upgrade.Company;
 using GameFlow.Upgrade.Location;
 using Managers.SceneLoader;
+using Signals;
 using Systems.FSM;
 using Systems.Pool;
 using Systems.SaveLoad;
@@ -74,6 +75,8 @@ namespace Installers.ProjectInstallers
                 .AsSingle()
                 .NonLazy();
             
+            SignalInstaller();
+            
             Container
                 .Bind<PoolManager>()
                 .FromNewComponentOnNewGameObject()
@@ -86,6 +89,22 @@ namespace Installers.ProjectInstallers
             Container
                 .Bind<DroneFlyingState>()
                 .AsSingle();
+        }
+
+        private void SignalInstaller()
+        {
+            SignalBusInstaller.Install(Container);
+            
+            Container.DeclareSignal<PurchaseUpgradeSignal>();
+            Container.DeclareSignal<EquipUpgradeSignal>();
+            Container.DeclareSignal<ShowUpgradeInfoSignal>();
+            Container.DeclareSignal<RefreshUpgradeUISignal>();
+            Container.DeclareSignal<ShowMessageSignal>();
+            Container.DeclareSignal<PlaySoundSignal>();
+            Container.DeclareSignal<UpgradePurchasedSignal>();
+            Container.DeclareSignal<UpgradeEquippedSignal>();
+            Container.DeclareSignal<UpgradeUnequippedSignal>();
+            Container.DeclareSignal<MoneyChangedSignal>();
         }
     }
 }
